@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>易云章demo</title>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+
+</head>
+<body>
+    <div>
+        <input id="file" type="file" />
+        <button id="upload" type="button">upload</button>
+    </div>
+    <div>
+        <button id="download" type="button">download</button>
+    </div>
+</body>
+
+
+<script type="text/javascript">
+function httpRequest(paramObj,fun,errFun) {
+	var xmlhttp = null;
+	/*创建XMLHttpRequest对象，
+	 *老版本的 Internet Explorer（IE5 和 IE6）使用 ActiveX 对象：new ActiveXObject("Microsoft.XMLHTTP")
+	 * */
+	if(window.XMLHttpRequest) {
+		xmlhttp = new XMLHttpRequest();
+	}else if(window.ActiveXObject) {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	/*判断是否支持请求*/
+	if(xmlhttp == null) {
+		alert('你的浏览器不支持XMLHttp');
+		return;
+	}
+	/*请求方式，并且转换为大写*/
+	var httpType = (paramObj.type || 'GET').toUpperCase();
+	/*数据类型*/
+	var dataType = paramObj.dataType || 'json';
+	/*请求接口*/
+	var httpUrl = paramObj.httpUrl || '';
+	/*是否异步请求*/
+	var async = paramObj.async || true;
+
+	/*请求接收*/
+	xmlhttp.onreadystatechange = function() {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		  /*成功回调函数*/
+		  fun(xmlhttp.responseText);
+		}else{
+			/*失败回调函数*/
+			errFun;
+		}
+	}
+
+	/*接口连接，先判断连接类型是post还是get*/
+	if(httpType == 'GET') {
+		var paramData = paramObj.data || [];
+		var requestData = '';
+		for(var name in paramData) {
+			requestData += name + '='+ paramData[name] + '&';
+		}
+		requestData = requestData == '' ? '' : requestData.substring(0,requestData.length - 1);
+		console.log(requestData)
+		xmlhttp.open("GET",httpUrl,async);
+		xmlhttp.send(null);
+	}else if(httpType == 'POST'){
+		// xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		// 用FormData，支持file传输
+		var form = new FormData();
+		var paramData = paramObj.data || [];
+		for(var key in paramData){
+			form.append(key,paramData[key])
+		}
+		xmlhttp.open("POST",httpUrl,async);
+		xmlhttp.send(form);
+	}
+}
+
+function random(){
+    var mm=Math.random();
+    var six = "";
+    if(mm>0.1)
+    {
+       six=Math.round(mm*1000000);
+    }else{
+       mm += 0.1;
+       six = Math.round(mm*1000000);
+    }
+    return six;
+}
+
+// 时间格式化
+function dateFormat(fmt,date)  {
+  var o = {
+    "M+" : date.getMonth()+1,                 //月份
+    "d+" : date.getDate(),                    //日
+    "h+" : date.getHours(),                   //小时
+    "m+" : date.getMinutes(),                 //分
+    "s+" : date.getSeconds(),                 //秒
+    "q+" : Math.floor((date.getMonth()+3)/3), //季度
+    "S"  : date.getMilliseconds()             //毫秒
+  };
+  if(/(y+)/.test(fmt))
+    fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));
+  for(var k in o)
+    if(new RegExp("("+ k +")").test(fmt))
+  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+  return fmt;
+}
+
+var appKey = 'xxxxxxxxxxxx'
+var appSecret = 'xxxxxxxxxxxxxxxxxxxxxxxxxx'
+var signUrl = 'https://testapi.ecloudsign.cn'
+
+
+// 签名
+function signData(dt) {
+	dt.appKey = appKey
+	dt.timestamp = dateFormat("yyyy-MM-dd hh:mm:ss", new Date())
+	dt.v = '1.0'
+	dt.nonce = ''+random()
+	var date = Object.keys(dt);
+	// 对数组进行升序排序
+	date.sort()
+	var str = ''
+	for(var i = 0; i < date.length; i++) {
+		if(dt[date[i]]!=null && dt[date[i]]!=''){
+			console.log(date[i] + "  " + dt[date[i]])
+			str += dt[date[i]]
+		}
+	}
+	str = appSecret + str + appSecret
+	console.log(str);
+	dt.signature = md5(str).toUpperCase()
+	console.log(dt)
+}
+
+
+// 服务端全都都是post请求
+// 生成证书(虚拟手机号)
+function postDemo() {
+	var jsonObject = {
+		  "type":"1", //类型 1：个人 、2：企业
+		  "cardType":"0", // 证件类型 0：身份证 1：军官证 ,2：护照、 3：驾驶证、4：工商登记证、5：税务登记证、6：组织机构代码、7：其他证件，8：统一社会信用代码
+		  "idCardNum":"xxxx", // 证件号码
+		  "name":"xxxx",   //企业或者个人真实名称
+		  "mobilePhone":"xxxx" //接口返回userNum字段，第三方对接平台需要做好用户对应关系，所有涉及到传手机号的接口，第三方都需要传该值
+	}
+	var dt = {info: JSON.stringify(jsonObject )}
+	signData(dt)
+
+	/*请求参数*/
+	var paramObj = {
+		httpUrl : signUrl + '/ecs/account/applyCertString.jspa',
+		type : 'post',
+		data : dt
+	}
+	/*请求调用*/
+	httpRequest(paramObj, function(respondDada) {
+		//这里编写成功的回调函数
+		console.log(respondDada)
+	},function() {
+		alert('网络错误')
+	})
+}
+
+postDemo()
+
+// 向服务器端发送文件，由于文件二进制流不参与密钥生成，因此签名后再设置文件】
+let button = document.getElementById('upload')
+button.addEventListener('click', event => {
+	let fileObj = document.getElementById('file').files[0]
+	if (fileObj) {
+		var dt = {contractNum: '11111111',mobilePhone:'13588886666'}
+		signData(dt)
+		dt.file = fileObj
+		/*请求参数*/
+		var paramObj = {
+			httpUrl : signUrl + '/ecs/contract/createContract.jspa',
+			type : 'post',
+			data : dt
+		}
+		/*请求调用*/
+		httpRequest(paramObj, function(respondDada) {
+			//这里编写成功的回调函数
+			console.log(respondDada)
+		},function() {
+			alert('网络错误')
+		})
+	} else {
+		console.log('请选择文件')
+	}
+})
+
+let button1 = document.getElementById('download')
+button1.addEventListener('click', event => {
+	var dt = {contractNum: '5B202CCA8C18ED64'}
+	signData(dt)
+	/*请求参数*/
+	var paramObj = {
+		httpUrl : signUrl + '/ecs/contract/downloadContract.jspa',
+		type : 'post',
+		data : dt
+	}
+	/*请求调用*/
+	httpRequest(paramObj, function(respondDada) {
+		//这里编写成功的回调函数
+		console.log(respondDada)
+	},function() {
+		alert('网络错误')
+	})
+
+})
+
+</script>
+
+</html>

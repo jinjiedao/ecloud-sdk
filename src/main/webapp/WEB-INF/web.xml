@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+<!--   <welcome-file-list> -->
+<!--     <welcome-file>/MyServletTest</welcome-file> -->
+<!--   </welcome-file-list> -->
+  <servlet>
+    <servlet-name>MyFirstServlet</servlet-name>
+    <servlet-class>com.howtodoinjava.servlets.MyFirstServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>MyServletTest</servlet-name>
+    <servlet-class>com.agile.ecloud.sdk.http.MyServletTest</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>MyServletParamTest</servlet-name>
+    <servlet-class>com.agile.ecloud.sdk.http.MyServletParamTest</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>TestSdkApiServlet</servlet-name>
+    <servlet-class>com.agile.ecloud.sdk.http.TestSdkApiServlet</servlet-class>
+  </servlet>
+
+
+  <servlet-mapping>
+    <servlet-name>MyFirstServlet</servlet-name>
+    <url-pattern>/MyFirstServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MyServletTest</servlet-name>
+    <url-pattern>/servletTest</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MyServletParamTest</servlet-name>
+    <url-pattern>/myServletParamTest</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TestSdkApiServlet</servlet-name>
+    <url-pattern>/testSdkApiServlet</url-pattern>
+  </servlet-mapping>
+</web-app>
