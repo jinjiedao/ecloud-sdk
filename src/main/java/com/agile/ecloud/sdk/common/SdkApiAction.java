@@ -268,6 +268,11 @@ public class SdkApiAction {
     public static final String DOWNLOADCONTRACT_DETAIL_ACTION         = "/ecs/downContractDetail/getContractDetailByContractIdForPdf.jspa ";
 
     /**
+     * 验签报告
+     */
+    public static final String GETCONTRACTEVIDENCEURL_ACTION  =  "/ecs/contract/getContractEvidenceUrl.jspa ";
+
+    /**
      * 合同签署动态验证码发送
      */
     public static final String SENDSMS_ACTION                         = "/ecs/contract/sendSms.jspa ";

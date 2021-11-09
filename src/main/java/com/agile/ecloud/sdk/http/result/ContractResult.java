@@ -700,6 +700,29 @@ public class ContractResult {
         }
     }
 
+    /**
+     *
+     * @param config
+     * @param contractNum
+     * @param mobilePhone
+     * @return
+     */
+    public static ECloudDomain getContractEvidenceUrl(EcloudPublicKey config, String contractNum,String mobilePhone) {
+
+        Map<String, String> map = new TreeMap<String, String>();
+
+        if (contractNum == null || "".equals(contractNum)) {
+            return ClassUtil.returnECloudDomain(ErrorMessage.CONTRACT_NUM_ERR.getCode(), ErrorMessage.CONTRACT_NUM_ERR.getMessage());
+        }
+        map.put("contractNum", contractNum);
+
+        map.put("mobilePhone", mobilePhone);
+
+        ECloudBean eClioudBean = new ECloudBean(config, SdkApiAction.GETCONTRACTEVIDENCEURL_ACTION, SdkApiAction.METHODPOST, map);
+        ECloudDomain eCloudDomain = eClioudBean.executeMethod();
+        return eCloudDomain;
+    }
+
     public static ECloudDomain getContractDetailByContractIdForPdf(EcloudPublicKey config, String contractId, String mobile, String targetPath) {
 
         Map<String, String> map = new TreeMap<String, String>();

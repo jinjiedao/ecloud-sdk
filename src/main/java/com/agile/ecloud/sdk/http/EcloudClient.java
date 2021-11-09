@@ -819,6 +819,18 @@ public class EcloudClient {
 	}
 
 	/**
+	 *  下载验证报告
+	 * @param contractNum 合同编号
+	 * @param mobilePhone 签署人手机号
+	 * @return
+	 */
+	public static ECloudDomain getContractEvidenceUrl(String contractNum,String mobilePhone) {
+		return ContractResult.getContractEvidenceUrl(EcloudPublicKey.instance, contractNum,mobilePhone);
+
+	}
+
+
+	/**
 	 * 用户授权验证签署合同 6.4.4
 	 *
 	 * @param signerInfo

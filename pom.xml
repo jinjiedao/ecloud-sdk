@@ -3,30 +3,60 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>agileCloud</groupId>
+	<groupId>io.github.yyzsdk</groupId>
 	<artifactId>Agile_ECloud_SDK</artifactId>
-	<version>3.7.4-SNAPSHOT</version>
+	<version>3.7.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
+	<licenses>
+		<license>
+			<name>BSD 3-Clause</name>
+			<url>https://spdx.org/licenses/BSD-3-Clause.html</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>yyzsdk</name>
+			<email>yangjie@jinjiedao.cn</email>
+			<url>https://github.com/yyzsdk</url>
+		</developer>
+	</developers>
+	<scm>
+		<url>https://github.com/yyzsdk/ecloud-sdk</url>
+		<connection>https://github.com/yyzsdk/ecloud-sdk.git</connection>
+		<developerConnection>https://github.com/yyzsdk</developerConnection>
+	</scm>
+
+
 	<distributionManagement>
-		<repository>
+		<!--<repository>
 			<id>releases</id>
 			<name>User Project Release</name>
 			<url>http://maven.myrrx.com/nexus/content/repositories/releases/</url>
-		</repository>
-		<snapshotRepository>
+		</repository>-->
+		<!--<snapshotRepository>
 			<id>snapshots</id>
 			<name>User Project SNAPSHOTS</name>
 			<url>http://maven.myrrx.com/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>-->
+
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
 		</snapshotRepository>
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Nexus Release Repository</name>
+			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
 	</distributionManagement>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.7</jdk.version>
 	</properties>
-
-
 
 
 	<repositories>
@@ -194,7 +224,8 @@
 					</includes>
 				</configuration>
 			</plugin>
-			
+
+
 		</plugins>
 		<finalName>Agile_ECloud_SDK1.8.3</finalName>
 	</build>
