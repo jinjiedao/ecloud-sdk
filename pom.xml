@@ -5,8 +5,12 @@
 
 	<groupId>io.github.yyzsdk</groupId>
 	<artifactId>Agile_ECloud_SDK</artifactId>
-	<version>3.7.5-SNAPSHOT</version>
+	<version>3.7.5-RELEASE</version>
 	<packaging>jar</packaging>
+
+	<name>ecloud-sdk</name>
+	<description>ecloud-sdk</description>
+	<url>https://github.com/yyzsdk/ecloud-sdk</url>
 
 	<licenses>
 		<license>
@@ -30,17 +34,6 @@
 
 
 	<distributionManagement>
-		<!--<repository>
-			<id>releases</id>
-			<name>User Project Release</name>
-			<url>http://maven.myrrx.com/nexus/content/repositories/releases/</url>
-		</repository>-->
-		<!--<snapshotRepository>
-			<id>snapshots</id>
-			<name>User Project SNAPSHOTS</name>
-			<url>http://maven.myrrx.com/nexus/content/repositories/snapshots/</url>
-		</snapshotRepository>-->
-
 		<snapshotRepository>
 			<id>sonatype-nexus-snapshots</id>
 			<name>Sonatype Nexus Snapshots</name>
@@ -55,7 +48,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jdk.version>1.7</jdk.version>
+		<jdk.version>1.8</jdk.version>
 	</properties>
 
 
@@ -114,12 +107,13 @@
 
 
 	<dependencies>
+		<!--commons-logging -->
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.0.4</version>
 		</dependency>
-		
+		<!--commons-io -->
 	    <dependency>
            <groupId>commons-io</groupId>
            <artifactId>commons-io</artifactId>
@@ -133,20 +127,20 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
-
+		<!--javax.servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
 			<scope>provided</scope>
 		</dependency>
-
+		<!--com.itextpdf -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
             <version>5.4.3</version>
         </dependency>
-        
+		<!--org.slf4j -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -202,6 +196,7 @@
 
 	<build>
 		<plugins>
+			<!--编译插件-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -209,10 +204,57 @@
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
+					<verbose>true</verbose>
+					<fork>true</fork>
+					<!--你的jdk地址-->
+					<executable>D:\Program Files\Java\jdk1.8.0_74\bin\javac</executable>
 				</configuration>
 			</plugin>
-			
+			<!--生产javadoc插件-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!--gpg加密插件-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!--生产源码文件插件-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<!-- 只打包sdk开头文件-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -224,7 +266,6 @@
 					</includes>
 				</configuration>
 			</plugin>
-
 
 		</plugins>
 		<finalName>Agile_ECloud_SDK1.8.3</finalName>
