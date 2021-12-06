@@ -526,7 +526,10 @@ public class SdkApiAction {
     
     /******获取模板信息********/
     public static final String TEMPLATE_INFO              = "/ecs/contractInfo/getTemplateInfo.jspa";
-    
+
+
+    /******获取模板信息********/
+    public static final String GET_TEMPLATE_INFO = "/ecs/contractInfo/getTemplateInfo.jspa";
     
     /**
      * 合同作废新

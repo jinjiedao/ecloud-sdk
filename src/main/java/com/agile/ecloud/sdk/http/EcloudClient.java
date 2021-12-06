@@ -1838,4 +1838,9 @@ public class EcloudClient {
 		return SignInfoResult.handWritingAddSign(EcloudPublicKey.instance, flowId, signImg,signType);
 
 	}
+
+    public static ECloudDomain getTemplateDetail(String templateNumber) {
+
+		return ContractResult.getTemplateDetail(EcloudPublicKey.instance, templateNumber);
+	}
 }

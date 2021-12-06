@@ -1385,7 +1385,7 @@ public class ContractResult {
             map.put("contractNum", contractNum);
         }
 
-        ECloudBean eClioudBean = new ECloudBean(config, SdkApiAction.DOWNLOAD_EVIDENCE_URL, SdkApiAction.METHODGET, map);
+        ECloudBean eClioudBean = new ECloudBean(config, SdkApiAction.DOWNLOAD_EVIDENCE_URL, SdkApiAction.METHODPOST, map);
         ECloudDomain eCloudDomain = eClioudBean.executeMethod();
         return eCloudDomain;
     }
@@ -2377,6 +2377,18 @@ public class ContractResult {
         }
         map.put("templateNumber", templateNumber);
         ECloudBean eClioudBean = new ECloudBean(config, SdkApiAction.TEMPLATE_INFO, SdkApiAction.METHODPOST, map);
+        ECloudDomain eCloudDomain = eClioudBean.executeMethod();
+        return eCloudDomain;
+    }
+
+    public static ECloudDomain getTemplateDetail(EcloudPublicKey config, String templateNumber) {
+        Map<String, String> map = new TreeMap<String, String>();
+
+        if (ClassUtil.isBlank(templateNumber)) {
+            return ClassUtil.returnECloudDomain(ErrorMessage.COMPONENTS_INFO.getCode(), ErrorMessage.COMPONENTS_INFO.getMessage());
+        }
+        map.put("templateNumber", templateNumber);
+        ECloudBean eClioudBean = new ECloudBean(config, SdkApiAction.GET_TEMPLATE_INFO, SdkApiAction.METHODPOST, map);
         ECloudDomain eCloudDomain = eClioudBean.executeMethod();
         return eCloudDomain;
     }
